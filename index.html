@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice</title>
+</head>
+
+<body>
+    <!--1.Reverse an Array-->
+    <h2>1. Reverse an Array</h2>
+    <p>Input: [1,2,3,4,5]</p>
+    <p id="output2" onclick="result()">click here for output</p>
+
+    <br>
+    <!--2.Flatten an Array-->
+    <h2>2. Flatten an Array</h2>
+    <p>Input: [1,[2,3][4,[5]]]</p>
+    <p id="output1" onclick="showOutput()">click here for output</p>
+
+    <br>
+    <!--3.Check for Duplicates-->
+
+    <h2>3.Check for Duplicates in an Array</h2>
+    <p>Enter numbers separated by commas:</p>
+    <input type="text" id="arrayInput" placeholder="e.g. 1,2,3,4,5,1">
+    <button onclick="checkDuplicates()">Check for Duplicates</button>
+    <p id="output"></p>
+
+    <br>
+    <!--4.Merge Two Objects-->
+    <h2>4.Merge Two Objects</h2>
+    <p>Input: {a:1, b:2},{b:2, c:4}</p>
+    <p id="answer" onclick="mergeOutput()">click here for output</p>
+
+    <br>
+    <!--5.Find the Maximum Number in an Array-->
+    <h2>5.Find Maximum Number in an Array</h2>
+    <label>Enter numbers (comma-separated):</label>
+    <input type="text" id="numbersInput">
+    <button onclick="findMax()">Find Max</button>
+    <p id="result"></p>
+
+    <br>
+    <!--6.Group Array of Objects by Property-->
+    <h2>6.Group Array of Objects by Property</h2>
+    <button onclick="groupByCategory()">Group Objects</button>
+    <pre id="resultObj"></pre> <!-- Displays formatted JSON output -->
+
+    <br>
+    <!--7.Find the Intersection of Two Arrays-->
+    <h2>7.Find Intersection of Two Arrays</h2>
+    <p>Input:[1,2,3],[2,3,4]</p>
+    <p id="resultOf2ary">click here for the output</p>
+
+    <br>
+    <!--8.Calculate the sum of Array Elements-->
+    <h2>8. Calculate Sum of Array Elements</h2>
+    <label>Enter numbers (comma-separated):</label>
+    <input type="text" id="numberBox">
+    <button id="sumCalculator">Get Sum</button> 
+    <p>Output: <span id="totalSum">0</span></p>
+    
+    <br>
+    <!--9.Remove Falsy Values from an Array-->
+    <h2>9. Remove Falsy Values from an Array</h2>
+    <label>Enter values (comma-separated):</label>
+    <input type="text" id="userValue">
+    <button id="removeFalsy">Filter</button> 
+    <p>Filtered Output: <span id="filteredArray">[]</span></p>
+
+    <br>
+    <!--10.Calculate Average of Array-->
+    <h2>10. Calculate Average of an Array</h2>
+    <label>Enter numbers (comma-separated):</label>
+    <input type="text" id="numbersInputBox"> <!-- Unique ID -->
+    <button id="averageButton">Find Average</button> <!-- Unique ID --> 
+    <p>Average Output: <span id="averageResult">0</span></p> <!-- Unique ID -->
+
+    <script>
+        //1. Reverse an Array
+        var output = document.getElementById("output2");
+        var ary = [1, 2, 3, 4, 5];
+
+        function result() {
+            output.textContent = "Output: " + ary.reverse();
+            console.log(ary);
+        }
+
+        //2. Flatten an Array
+        function showOutput() {
+            let arr = [1, [2, 3], [4, [5]]];
+            let flatArr = arr.flat(Infinity);
+            document.getElementById("output1").innerText = "Output: " + JSON.stringify(flatArr);
+        }
+
+        //3. Check for Duplicates
+        function checkDuplicates() {
+            let input = document.getElementById("arrayInput").value;
+            let arr = input.split(",").map(num => num.trim()); // Convert input to an array
+
+            let hasDuplicate = new Set(arr).size !== arr.length; // Check for duplicates
+
+            document.getElementById("output").innerText = "Output: " + hasDuplicate;
+        }
+
+        //4.Merge Two Objects
+        function mergeOutput() {
+            let obj1 = { a: 1, b: 2 };
+            let obj2 = { b: 2, c: 4 };
+
+            let mergedObj = Object.assign({}, obj1, obj2); // Merging objects
+
+            // Formatting output exactly as { a: 1, b: 2, c: 4 }
+            let formattedOutput = `{ a: ${mergedObj.a}, b: ${mergedObj.b}, c: ${mergedObj.c} }`;
+
+            document.getElementById("answer").innerText = formattedOutput;
+        }
+
+        //5.Find the Maximum Number in an Array
+        function findMax() {
+            let input = document.getElementById("numbersInput").value;
+            let numArray = input.split(",").map(Number); // Convert input to an array of numbers
+
+            if (numArray.length === 0 || numArray.some(isNaN)) {
+                document.getElementById("result").innerText = "Please enter valid numbers!";
+                return;
+            }
+
+            let maxNumber = Math.max(...numArray); // Find max number
+            document.getElementById("result").innerText = "Maximum Number: " + maxNumber;
+        }
+
+        //6.Group Array of Objects by Property
+        function groupByCategory() {
+            let items = [
+                { id: 1, category: 'fruit' },
+                { id: 2, category: 'vegetable' },
+                { id: 3, category: 'fruit' }
+            ];
+
+            let groupedResult = items.reduce((acc, item) => {
+                let key = item.category; // Group by 'category'
+                if (!acc[key]) {
+                    acc[key] = [];
+                }
+                acc[key].push(item);
+                return acc;
+            }, {});
+
+            // Convert object to formatted JSON with correct spacing
+            let formattedOutput = "{\n";
+            let keys = Object.keys(groupedResult);
+
+            keys.forEach((key, index) => {
+                formattedOutput += `  ${key}: ${JSON.stringify(groupedResult[key], null, 2)}`;
+                if (index < keys.length - 1) {
+                    formattedOutput += ",\n"; // Add comma except for the last item
+                }
+            });
+
+            formattedOutput += "\n}";
+
+            document.getElementById("resultObj").innerText = formattedOutput;
+        }
+
+        //7.Find the Intersection of Two Arrays
+        document.getElementById("resultOf2ary").addEventListener("click", function () {
+            let array1 = [1, 2, 3];
+            let array2 = [2, 3, 4];
+
+            let intersection = array1.filter(value => array2.includes(value));
+
+            this.innerText = "Output: " + JSON.stringify(intersection);
+        });
+
+        //8.Calculate the Sum of Array Elements
+        document.getElementById("sumCalculator").addEventListener("click", function() {
+            let input = document.getElementById("numberBox").value;
+
+            if (input.trim() === "") {
+                document.getElementById("totalSum").innerText = "0"; // If empty, show 0
+                return;
+            }
+
+            // Convert input to an array of numbers
+            let numbers = input.split(",").map(num => parseFloat(num.trim())).filter(num => !isNaN(num));
+
+            if (numbers.length === 0) {
+                document.getElementById("totalSum").innerText = "Invalid input!";
+                return;
+            }
+
+            // Calculate sum
+            let sum = numbers.reduce((acc, num) => acc + num, 0);
+
+            // Display result
+            document.getElementById("totalSum").innerText = sum;
+        });
+        
+        //9.Remove Falsy Values from an Array
+        document.getElementById("removeFalsy").addEventListener("click", function() {
+            let userInput = document.getElementById("userValue").value;
+
+            if (userInput.trim() === "") {
+                document.getElementById("filteredArray").innerText = "[]"; // If empty, show empty array
+                return;
+            }
+
+            // Convert input to an array and parse values correctly
+            let rawValues = userInput.split(",").map(item => {
+                let trimmedItem = item.trim();
+
+                if (trimmedItem === "false") return false;
+                if (trimmedItem === "true") return true;
+                if (trimmedItem === "null") return null;
+                if (trimmedItem === "undefined") return undefined;
+                if (trimmedItem === "NaN") return NaN;
+                if (trimmedItem === "") return ""; // Empty strings should be filtered out
+                if (!isNaN(trimmedItem)) return Number(trimmedItem); // Convert numbers
+
+                return trimmedItem; // Otherwise, keep it as a string
+            });
+
+            // Remove falsy values (false, 0, "", null, undefined, NaN)
+            let cleanedValues = rawValues.filter(Boolean);
+
+            // Display result
+            document.getElementById("filteredArray").innerText = JSON.stringify(cleanedValues);
+        });
+    
+         //10.Calculate Average of an Array
+         document.getElementById("averageButton").addEventListener("click", function() {
+            let userNumbers = document.getElementById("numbersInputBox").value; // Unique variable
+
+            if (userNumbers.trim() === "") {
+                document.getElementById("averageResult").innerText = "0"; // If empty, show 0
+                return;
+            }
+
+            // Convert input to an array of numbers
+            let numberArray = userNumbers.split(",").map(num => parseFloat(num.trim())).filter(num => !isNaN(num));
+
+            if (numberArray.length === 0) {
+                document.getElementById("averageResult").innerText = "Invalid input!";
+                return;
+            }
+
+            // Calculate average
+            let sumOfNumbers = numberArray.reduce((total, num) => total + num, 0);
+            let computedAverage = sumOfNumbers / numberArray.length;
+
+            // Display result
+            document.getElementById("averageResult").innerText = computedAverage.toFixed(2); // Show result with 2 decimal places
+        });
+    </script>
+</body>
+
+</html>
